@@ -22,7 +22,7 @@ import lombok.Setter;
 @Getter
 @Setter
 
-public class informacion {
+public class Informacion {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
@@ -31,9 +31,9 @@ public class informacion {
     private String texto;
     private String iconoServicio;
     @OneToMany(fetch = FetchType.LAZY)
-    private List<imagen> imagen;
+    private List<Imagen> imagen;
 
-    public informacion(Integer id, String titulo, String seccion, String texto, String iconoServicio, List<imagen> imagen) {
+    public Informacion(Integer id, String titulo, String seccion, String texto, String iconoServicio, List<Imagen> imagen) {
         this.id = id;
         this.titulo = titulo;
         this.seccion = seccion;
@@ -44,7 +44,7 @@ public class informacion {
 
     
 
-    public informacion() {
+    public Informacion() {
     }
 
     @Override

@@ -4,7 +4,7 @@
  */
 package NameCheap.nameCheap.repositorios;
 
-import NameCheap.nameCheap.entidades.informacion;
+import NameCheap.nameCheap.entidades.Informacion;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,6 +13,6 @@ import org.springframework.stereotype.Repository;
  * @author Admin
  */
 @Repository
-public interface informacionRepositorio extends JpaRepository<informacion, Integer> {
+public interface InformacionRepositorio extends JpaRepository<Informacion, Integer> {
     
 }

@@ -4,7 +4,7 @@
  */
 package NameCheap.nameCheap.repositorios;
 
-import NameCheap.nameCheap.entidades.usuario;
+import NameCheap.nameCheap.entidades.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,6 +13,8 @@ import org.springframework.stereotype.Repository;
  * @author Admin
  */
 @Repository
-public interface usuarioRepositorio extends JpaRepository<usuario, Integer> {
+public interface UsuarioRepositorio extends JpaRepository<Usuario, Integer> {
+
+    public Usuario findByUsername(String username);
     
 }

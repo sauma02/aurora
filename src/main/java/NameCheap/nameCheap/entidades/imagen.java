@@ -20,7 +20,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class imagen {
+public class Imagen {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
@@ -29,13 +29,13 @@ public class imagen {
     private Integer tamano;
     private String fileType;
     @ManyToOne(fetch = FetchType.EAGER)
-    private informacion info;
+    private Informacion info;
     private String ruta;
 
-    public imagen() {
+    public Imagen() {
     }
 
-    public imagen(Integer id, String titulo, String nombreImagen, Integer tamano, String fileType, informacion info, String ruta) {
+    public Imagen(Integer id, String titulo, String nombreImagen, Integer tamano, String fileType, Informacion info, String ruta) {
         this.id = id;
         this.titulo = titulo;
         this.nombreImagen = nombreImagen;

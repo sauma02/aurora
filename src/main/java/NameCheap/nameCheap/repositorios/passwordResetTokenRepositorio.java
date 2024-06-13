@@ -4,7 +4,7 @@
  */
 package NameCheap.nameCheap.repositorios;
 
-import NameCheap.nameCheap.entidades.passwordResetToken;
+import NameCheap.nameCheap.entidades.PasswordResetToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,6 +13,6 @@ import org.springframework.stereotype.Repository;
  * @author Admin
  */
 @Repository
-public interface passwordResetTokenRepositorio extends JpaRepository<passwordResetToken, Integer> {
+public interface PasswordResetTokenRepositorio extends JpaRepository<PasswordResetToken, Integer> {
     
 }

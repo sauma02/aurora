@@ -21,21 +21,21 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class passwordResetToken {
+public class PasswordResetToken {
    @Id 
-   @GeneratedValue(strategy = GenerationType.UUID)
+   @GeneratedValue(strategy = GenerationType.AUTO)
    private Integer id;
    private String token;
    private String email;
    @OneToOne
-   private usuario usuario;
+   private Usuario usuario;
    private LocalDateTime expirationTime;
-   public passwordResetToken(){
+   public PasswordResetToken(){
         this.token = UUID.randomUUID().toString();
         this.email = email;
         this.expirationTime = calculateExpirationDate();
     }
-    public passwordResetToken(Integer id, String token, String email, usuario usuario, LocalDateTime expirationTime) {
+    public PasswordResetToken(Integer id, String token, String email, Usuario usuario, LocalDateTime expirationTime) {
         this.id = id;
         this.token = token;
         this.email = email;

@@ -8,6 +8,6 @@ package NameCheap.nameCheap.servicios;
  *
  * @author Admin
  */
-public interface emailServicio {
+public interface EmailServicio {
     
 }

@@ -4,7 +4,7 @@
  */
 package NameCheap.nameCheap.servicios;
 
-import NameCheap.nameCheap.entidades.imagen;
+import NameCheap.nameCheap.entidades.Imagen;
 import java.nio.file.Path;
 import java.util.stream.Stream;
 import org.springframework.core.io.Resource;
@@ -21,7 +21,7 @@ public interface FileStorageService {
     public Resource load(String filename);
     public void deleteAll();
     public Stream<Path> loadAll();
-    public void deleteFileByName(imagen file);
-    public void delete(imagen img);
+    public void deleteFileByName(Imagen file);
+    public void delete(Imagen img);
     public void delete2(MultipartFile file);
 }

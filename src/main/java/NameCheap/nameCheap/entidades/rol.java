@@ -22,7 +22,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class rol {
+public class Rol {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
@@ -30,12 +30,12 @@ public class rol {
     private String descripcion;
     @JoinColumn(name = "usuario_id")
     @OneToMany(fetch = FetchType.EAGER)
-    private List<usuario> usuario;
+    private List<Usuario> usuario;
 
-    public rol() {
+    public Rol() {
     }
 
-    public rol(Integer id, String nombre, String descripcion, List<usuario> usuario) {
+    public Rol(Integer id, String nombre, String descripcion, List<Usuario> usuario) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;

@@ -8,6 +8,6 @@ package NameCheap.nameCheap.servicios;
  *
  * @author Admin
  */
-public class informacionServicio {
+public class InformacionServicio {
     
 }
