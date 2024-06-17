@@ -26,7 +26,7 @@ public class Imagen {
     private Integer id;
     private String titulo;
     private String nombreImagen;
-    private Integer tamano;
+    private Long tamano;
     private String fileType;
     @ManyToOne(fetch = FetchType.EAGER)
     private Informacion info;
@@ -35,7 +35,7 @@ public class Imagen {
     public Imagen() {
     }
 
-    public Imagen(Integer id, String titulo, String nombreImagen, Integer tamano, String fileType, Informacion info, String ruta) {
+    public Imagen(Integer id, String titulo, String nombreImagen, Long tamano, String fileType, Informacion info, String ruta) {
         this.id = id;
         this.titulo = titulo;
         this.nombreImagen = nombreImagen;

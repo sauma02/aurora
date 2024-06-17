@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <button><a href="/admin/adminPanel/registrarInfo">Registrar Información</a></button>
+                    <div style="display: flex; justify-content: center;" class="w3-content w3-display-container">
+                        <table id="panelDeManejo">
+                            <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Título</th>
+                                <th>Seccion</th>
+                                <th>texto</th>
+                                <th>Incono(Servicio)</th>
+                                <th>Imagen</th>
+                                <th>Acción</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="info : ${infoLista}">
+                                <td th:text="${info.id}"></td>
+                                <td th:text="${info.titulo}"></td>
+                                <td th:text="${info.seccion}"></td>
+                                <td th:text="${info.texto}"></td>
+                                <span th:if="${info.iconoServicio != null}">
+                                <td th:text="${info.iconoServicio}"></td>
+                                </span>
+                                <span th:unless="${info.iconoServicio != null}">
+                                    <td></td>    
+                                </span>
+                              
+                                
+                                <td>
+                                    <span th:if="${info.imagen?.nombreImagen != null}">
+                                        <img style="width: 200px; position: relative; vertical-align: middle;" th:src="@{'/img/' + ${info.imagen.nombreImagen}}" th:alt="${'Imagen de '+ {info.titulo}}">
+                                    </span>
+                                    <span th:unless="${info.imagen?.nombreImagen != null}">No hay imágenes registradas</span>
+                                </td>
+                                <td>
+                                    <form>
+                                        <button id='editar' name="editar">
+                                            <a th:href="@{|/admin/adminPanel/editarInfo/${info.id}|}">Editar</a>
+                                        </button>
+                                    </form>
+                                    <form th:action="@{|/admin/adminPanel/eliminar/${info.id}|}" method="post">
+                                        <button id='eliminar' name="eliminar">Eliminar</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+    </body>
+</html>

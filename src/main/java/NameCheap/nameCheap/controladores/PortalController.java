@@ -19,4 +19,13 @@ public class PortalController {
    public String inicio(){
        return "index.html";
    }
+   @GetMapping("/portafolio")
+   public String portafolio (){
+       return "portafolio.html";
+   }
+   @GetMapping("/login")
+   public String login(){
+       return "login.html";
+   }
+   
 }
