@@ -4,8 +4,19 @@
  */
 package NameCheap.nameCheap.controladores;
 
+import NameCheap.nameCheap.config.MySimpleAuthenticationSuccessHandler;
+import NameCheap.nameCheap.entidades.Usuario;
+import NameCheap.nameCheap.servicios.UsuarioServicio;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -13,7 +24,12 @@ import org.springframework.web.bind.annotation.GetMapping;
  */
 @Controller
 public class PortalController {
-    
+    @Autowired
+    private UsuarioServicio usuarioServicio;
+    @Autowired
+    private AuthenticationManager authenticationManager;
+      @Autowired 
+    private MySimpleAuthenticationSuccessHandler authenticationSuccessHandler;
     
    @GetMapping("/")
    public String inicio(){
@@ -27,5 +43,32 @@ public class PortalController {
    public String login(){
        return "login.html";
    }
-   
+   @PostMapping("/login")
+   public String loginForm(@RequestParam("username") String username, @RequestParam("password") String password, ModelMap map){
+       UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
+       try {
+           Usuario user = usuarioServicio.buscarPorUsername(username);
+           if(user.getPassword().equals(password)){
+               Authentication auth = authenticationManager.authenticate(token);
+               SecurityContextHolder.getContext().setAuthentication(auth);
+               String redirectUrl = authenticationSuccessHandler.determineTargetUrlForAuthentication(auth);
+               return "redirect:"+redirectUrl;
+               
+           }else{
+               map.addAttribute("errorStatus", "true");
+               map.addAttribute("errorMessage", "Error, el usuario y/o contraseña son incorrectos");
+               return "login.html";
+           }
+       } catch (Exception e) {
+           e.getCause();
+           
+           if(e.getCause() != null){
+               System.err.println("Error: "+e.getMessage().toString());
+               
+           }
+           map.addAttribute("errorStatus", "true");
+           map.addAttribute("errorMessage", "Error inesperado: "+e.getMessage());
+           return "login.html";
+       }
+   }
 }

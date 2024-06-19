@@ -43,6 +43,9 @@ public class UsuarioServicio implements UserDetailsService{
             usuarioRepositorio.delete(usuario);
         }
     }
+    public Usuario buscarPorUsername(String username){
+        return usuarioRepositorio.findByUsername(username);
+    }
     public List<Usuario> listarUsuarios(){
         return usuarioRepositorio.findAll();
     }
