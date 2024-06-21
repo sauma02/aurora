@@ -9,6 +9,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import java.util.List;
 import lombok.Getter;
@@ -30,7 +31,7 @@ public class Informacion {
     private String seccion;
     private String texto;
     private String iconoServicio;
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Imagen> imagen;
 
     public Informacion(Integer id, String titulo, String seccion, String texto, String iconoServicio, List<Imagen> imagen) {

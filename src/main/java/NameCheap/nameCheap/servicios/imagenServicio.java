@@ -30,6 +30,7 @@ public class ImagenServicio {
     @Transactional
     public Imagen crearImagen(Imagen imagen, Informacion info, MultipartFile file) throws Exception {
         try {
+            
             Path ruta = Paths.get("src/main/resources/static/img/" + file.getOriginalFilename());
 
             imagen.setRuta(ruta.toString());

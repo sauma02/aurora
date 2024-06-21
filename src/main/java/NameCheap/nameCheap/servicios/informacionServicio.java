@@ -4,13 +4,16 @@
  */
 package NameCheap.nameCheap.servicios;
 
+import NameCheap.nameCheap.entidades.Imagen;
 import NameCheap.nameCheap.entidades.Informacion;
 import NameCheap.nameCheap.repositorios.InformacionRepositorio;
 import jakarta.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -20,10 +23,32 @@ import org.springframework.stereotype.Service;
 public class InformacionServicio {
     @Autowired
     private InformacionRepositorio informacionRepositorio;
+    @Autowired
+    private FileStorageService storageService;
+    @Autowired
+    private ImagenServicio imagenServicio;
     @Transactional
-    public Informacion crearInfo(Informacion info){
-        informacionRepositorio.save(info);
-        return info;
+    public Informacion crearInfo(String titulo, String seccion, String texto, String iconoServicio, MultipartFile imagen) throws Exception{
+        if(imagen != null){
+            Informacion info = new Informacion();
+            Imagen img = new Imagen();
+            List<Imagen> listImg = new ArrayList();
+            info.setSeccion(seccion);
+            info.setTexto(texto);
+            info.setTitulo(titulo);
+            info.setIconoServicio(iconoServicio);
+            img.setNombreImagen(storageService.listOneFile(imagen).getOriginalFilename());
+            imagenServicio.crearImagen(img, info, imagen);
+            listImg.add(img);
+            info.setImagen(listImg);
+            informacionRepositorio.save(info);
+            return info;
+            
+        }else{
+            Informacion info = new Informacion(null, titulo, seccion, texto, iconoServicio, null);
+            return info;
+        }
+        
     }
     public void editarInfo(Informacion info){
         Optional<Informacion> resInfo = informacionRepositorio.findById(info.getId());

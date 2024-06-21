@@ -53,43 +53,21 @@ public class AdminController {
     @GetMapping("/admin/adminPanel/registrarInfo")
     public String infoForm(){
         return "registrarInfo.html";
+               
     }
 
    @PostMapping("/admin/adminPanel/registrarInfo/regis")
     public String registrarInfo(@RequestParam("titulo") String titulo, @RequestParam("seccion") String seccion, @RequestParam("texto") String texto,
-            @RequestParam("iconoServicio") String inconoServicio, @RequestParam("imagen[]") MultipartFile[] imagen, ModelMap map) {
+            @RequestParam("iconoServicio") String inconoServicio, @RequestParam("imagen") MultipartFile imagen, ModelMap map) {
         try {
-            Informacion info = new Informacion();
-            Imagen img = new Imagen();
-            List<Imagen> listImg = new ArrayList();
             if (imagen != null) {
-
-                info.setTitulo(titulo);
-                info.setTexto(texto);
-                info.setSeccion(seccion);
-                info.setIconoServicio(inconoServicio);
-                storageService.init();
-                for (MultipartFile file : imagen) {
-                    if (storageService.listOneFile(file).isEmpty() || storageService.listOneFile(file) == null) {
-                        storageService.save(file);
-                        imagenServicio.crearImagen(img, info, file);
-                        listImg.add(img);
-
-                    }
-                }
-                info.setImagen(listImg);
-                infoServicio.crearInfo(info);
+                
+                
                 map.addAttribute("exitoStatus", "true");
                 map.addAttribute("exitoMessage", "Se ha registrado la informacion con exito");
                 return "registrarInfo.html";
             } else {
-                info.setTitulo(titulo);
-                info.setTexto(texto);
-                info.setSeccion(seccion);
-                info.setIconoServicio(inconoServicio);
-
-                info.setImagen(listImg);
-                infoServicio.crearInfo(info);
+                
                 map.addAttribute("exitoStatus", "true");
                 map.addAttribute("exitoMessage", "Se ha registrado la informacion sin imagen con exito");
                 return "registrarInfo.html";
