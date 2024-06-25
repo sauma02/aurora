@@ -51,18 +51,19 @@ public class AdminController {
         map.addAttribute("infoLista", infoLista);
         return "adminPanel.html";
     }
+
     @GetMapping("/admin/adminPanel/registrarInfo")
-    public String infoForm(){
+    public String infoForm() {
         return "registrarInfo.html";
-               
+
     }
 
-   @PostMapping("/admin/adminPanel/registrarInfo/regis")
+    @PostMapping("/admin/adminPanel/registrarInfo/regis")
     public String registrarInfo(@RequestParam("titulo") String titulo, @RequestParam("seccion") String seccion, @RequestParam("texto") String texto,
             @RequestParam("iconoServicio") String inconoServicio, @RequestParam("imagen") MultipartFile imagen, ModelMap map) {
         try {
             if (imagen != null) {
-                
+
                 infoServicio.crearInfo(titulo, seccion, texto, inconoServicio, imagen);
                 map.addAttribute("exitoStatus", "true");
                 map.addAttribute("exitoMessage", "Se ha registrado la informacion con exito");
@@ -79,15 +80,99 @@ public class AdminController {
                 System.err.println("Error: " + e.getCause().getMessage());
             }
             map.addAttribute("exitoStatus", "false");
-            map.addAttribute("exitoMessage", "Error al registrar informacion "+e.getMessage());
+            map.addAttribute("exitoMessage", "Error al registrar informacion " + e.getMessage());
             return "registrarInfo.html";
         }
 
     }
-   @GetMapping("/admin/adminPanel/registrarInfo/editar/{id}")
-   public String editar(@PathVariable("id") Integer id,  ModelMap map){
-       Informacion info = infoServicio.listarInfoPorId(id);
-       map.addAttribute("info", info);
-       return "editarInfo.html";
-   }
+
+    @GetMapping("/admin/adminPanel/registrarInfo/editar/{id}")
+    public String editar(@PathVariable("id") Integer id, ModelMap map) {
+        Informacion info = infoServicio.listarInfoPorId(id);
+        map.addAttribute("info", info);
+        return "editarInfo.html";
+    }
+
+    @PostMapping("/admin/adminPanel/registrarInfo/editar/editarImagen")
+    public String editForm(@RequestParam("imagenId") Integer imagenId, @RequestParam("imagen") MultipartFile imagen, ModelMap map) {
+        try {
+            storageService.init();
+            Imagen img = imagenServicio.imagenPorId(imagenId);
+            Informacion info = img.getInfo();
+            
+            List<Imagen> listaImagen = info.getImagen();
+            if(imagen.getOriginalFilename() == img.getNombreImagen()){
+                map.addAttribute("info", info);
+                map.addAttribute("errorStatus", "true");
+                map.addAttribute("errorMessage", "Uploaded file is the same as the one in the folder");
+                return "editarInfo.html";
+            }else{
+                for (Imagen imagen1 : listaImagen) {
+                    if(img.equals(imagen1)){
+                        listaImagen.remove(imagen1);
+                        Imagen imgNueva = new Imagen();
+                        storageService.save(imagen);
+                        imagenServicio.crearImagen(imgNueva, info, imagen);
+                        listaImagen.add(imgNueva);
+                        
+                        
+                        
+                    }
+                    
+                }
+                
+                info.setSeccion(info.getSeccion());
+                info.setTexto(info.getTexto());
+                info.setIconoServicio(info.getIconoServicio());
+                info.setTitulo(info.getTitulo());
+                info.setImagen(listaImagen);
+                map.addAttribute("errorStatus", "false");
+                map.addAttribute("errorMessage", "Image edited succesfully");
+                infoServicio.editarInfo(info);
+                return "editarInfo.html";
+            }
+            
+
+        } catch (Exception e) {
+            e.getCause();
+            
+            if(e.getCause() != null){
+                System.err.println("Error: "+e.getCause().getMessage());
+            }
+            map.addAttribute("errorStatus", "true");
+            map.addAttribute("errorMessage", "Error: "+e.getMessage());
+            return "editarInfo.html";
+        }
+
+    }
+    @PostMapping("/admin/adminPanel/registrarInfo/editar/eliminar/{id}")
+    public String eliminar(@PathVariable("id") Integer id, ModelMap map){
+        try{
+        Imagen img = imagenServicio.imagenPorId(id);
+        Informacion info = img.getInfo();
+        List<Imagen> imgLista = info.getImagen();
+        for (Imagen imagen : imgLista) {
+            if(img.equals(imagen)){
+                imgLista.remove(imagen);
+                imagenServicio.eliminarImagen(imagen);
+                imagenServicio.eliminarImagen(img);
+                storageService.delete(img);
+                
+            }
+        }
+        info.setImagen(imgLista);
+        infoServicio.editarInfo(info);
+        map.addAttribute("errorStatus", "false");
+        map.addAttribute("errorMessage", "Image deleted succesfully");
+        return "editarInfo.html";
+        }catch(Exception e){
+            e.getCause();
+                    if(e.getCause() != null){
+                        System.err.println("Error: "+e.getCause().getMessage());
+                    }
+                    map.addAttribute("errorStatus", "true");
+                    map.addAttribute("errorMessage", "Error: "+e.getMessage());
+                    return "editarInfo.html";
+        }
+    }
 }

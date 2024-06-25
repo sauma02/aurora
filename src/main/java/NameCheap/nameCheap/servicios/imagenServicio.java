@@ -10,6 +10,7 @@ import NameCheap.nameCheap.repositorios.ImagenRepositorio;
 import jakarta.transaction.Transactional;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -51,7 +52,7 @@ public class ImagenServicio {
         }
     }
 
-    public void editarImagenInfo(Informacion info, Imagen imagen, MultipartFile file) throws Exception {
+    public Imagen editarImagenInfo(Informacion info, Imagen imagen, MultipartFile file) throws Exception {
         try {
             Path ruta = Paths.get("src/main/resources/img/" + file.getOriginalFilename());
 
@@ -61,18 +62,29 @@ public class ImagenServicio {
             imagen.setFileType(file.getContentType());
             imagen.setInfo(info);
             imagenRepositorio.save(imagen);
+            return imagen;
         } catch (Exception e) {
             e.printStackTrace();
 
             if (e.getCause() != null) {
                 System.err.println("Error: " + e.getCause().getMessage());
             }
-
+            return null;
         }
     }
 
     public void eliminarImagen(Imagen img) {
         storageService.deleteFileByName(img);
         imagenRepositorio.delete(img);
+    }
+    public Imagen imagenPorId(Integer id){
+        Optional<Imagen> imagenRes = imagenRepositorio.findById(id);
+        if(imagenRes.isPresent()){
+            Imagen img = imagenRes.get();
+            return img;
+        }else{
+            return null;
+        }
+           
     }
 }

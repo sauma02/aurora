@@ -12,6 +12,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
     <body>
         <div>
             <form th:action="@{/admin/adminPanel/registrarInfo/editar/edit}" method="post" enctype="multipart/form-data" >
+                <label for="id">Id:</label>
+                <input type="number" id="id" name="id" th:value="${info.id}" readonly>
+                
                 <label for="seccion">Section:</label>
                 <input type="text" id="seccion" name="seccion" th:value="${info.seccion}" >
 
@@ -44,19 +47,23 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                             <td th:text="${imagen.tamano}"></td>
                                            
                                             <td>
-                                                <form th:action="@{/admin/adminPanel/registrarInfo/editar/editarImagen/${imagen.id}}" method="post" enctype="multipart/form-data">
-                                                <label for="imagen">Image</label>
+                                                <form th:action="@{/admin/adminPanel/registrarInfo/editar/editarImagen}" method="post" enctype="multipart/form-data">
+                                                    <input type="number" hidden for="imagenId" th:value="${imagen.id}">
+                                                    
+                                                    <label for="imagen">Image</label>
                                                 
                                                 <input type="file" id="imagen" name="imagen">
                                                 <button type="submit">Edit image</button>
                                                 </form>
-                                                <form th:action="@{/admin/adminPanel/registrarInfo/editar/eliminarImagen/${imagen.id}}" method="post" enctype="multipart/form-data">
+                                                <form th:action="@{|/admin/adminPanel/registrarInfo/editar/eliminar/${imagen.id}|}" method="post" enctype="multipart/form-data">
+                                                    <input type="number" hidden for="imagenId" th:value="${imagen.id}">
+                                                    
                                                     <button type="submit">Delete</button>
                                                 </form>
                                             </td>
                                         </tr>
                                         </span>
-                                    <span th:unless="${info.imagen != null}">No images registered</span>
+                                    
                                     </tbody>
                                 </table>
                 <button type="submit" name="save" value="save">Submit</button>
