@@ -7,12 +7,16 @@ package NameCheap.nameCheap.controladores;
 import NameCheap.nameCheap.config.MySimpleAuthenticationSuccessHandler;
 import NameCheap.nameCheap.entidades.Usuario;
 import NameCheap.nameCheap.servicios.UsuarioServicio;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -71,5 +75,12 @@ public class PortalController {
            return "login.html";
        }
    }
-   
+   @GetMapping("/logout")
+    public String logout(HttpServletRequest request, HttpServletResponse response, Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+        return "redirect:/"; // Redirect to login page with a logout parameter
+    }
 }

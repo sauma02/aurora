@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div>
+            <form th:action="@{/admin/adminPanel/registrarInfo/editar/edit}" method="post" enctype="multipart/form-data" >
+                <label for="seccion">Section:</label>
+                <input type="text" id="seccion" name="seccion" th:value="${info.seccion}" >
+
+                <label for="titulo">Title:</label>
+                <input type="text" id="titulo" name="titulo" th:value="${info.titulo}" >
+
+                <label for="iconoServicio">Service Icon(Use this label just for the services area):</label>
+                <input type="text" id="iconoServicio" name="iconoServicio" th:value="${info.iconoServicio}"  >
+
+                <label for="texto">Text:</label>
+                <input type="text" id="texto" name="texto" th:value="${info.texto}">
+
+                <table id="listaImagenes" class="display">
+                                    <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Title</th>
+                                            <th>Image name</th>
+                                            <th>Size</th>
+                                            
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <span th:if="${info.imagen != null}">
+                                        <tr th:each="imagen : ${info.imagen}">
+                                            <td th:text="${imagen.id}"></td>
+                                            <td th:text="${imagen.titulo}"></td>
+                                            <td th:text="${imagen.nombreImagen}"></td>
+                                            <td th:text="${imagen.tamano}"></td>
+                                           
+                                            <td>
+                                                <form th:action="@{/admin/adminPanel/registrarInfo/editar/editarImagen/${imagen.id}}" method="post" enctype="multipart/form-data">
+                                                <label for="imagen">Image</label>
+                                                
+                                                <input type="file" id="imagen" name="imagen">
+                                                <button type="submit">Edit image</button>
+                                                </form>
+                                                <form th:action="@{/admin/adminPanel/registrarInfo/editar/eliminarImagen/${imagen.id}}" method="post" enctype="multipart/form-data">
+                                                    <button type="submit">Delete</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        </span>
+                                    <span th:unless="${info.imagen != null}">No images registered</span>
+                                    </tbody>
+                                </table>
+                <button type="submit" name="save" value="save">Submit</button>
+                <button><a th:href="@{/admin/adminPanel}" >Go back</a></button>
+                <!-- Mostrar mensaje de error si existe -->
+
+            </form>
+        </div>
+    </body>
+</html>

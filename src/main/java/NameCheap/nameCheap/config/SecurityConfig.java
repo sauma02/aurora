@@ -37,8 +37,9 @@ public class SecurityConfig {
             return https.formLogin(Customizer.withDefaults())
                     .authorizeHttpRequests(req -> req
                     .requestMatchers("/**").permitAll()
+                    .requestMatchers("/**" , "/js/**", "/css/**").permitAll()
                     .requestMatchers("/login/**").permitAll()       
-                    .requestMatchers("/admin/**").hasAuthority("admin")
+                    .requestMatchers("/admin/**").hasAnyAuthority("admin")
                     .anyRequest().authenticated())
                     .formLogin()
                     .loginPage("/login")

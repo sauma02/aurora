@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -62,12 +63,12 @@ public class AdminController {
         try {
             if (imagen != null) {
                 
-                
+                infoServicio.crearInfo(titulo, seccion, texto, inconoServicio, imagen);
                 map.addAttribute("exitoStatus", "true");
                 map.addAttribute("exitoMessage", "Se ha registrado la informacion con exito");
                 return "registrarInfo.html";
             } else {
-                
+                infoServicio.crearInfo(titulo, seccion, texto, inconoServicio, null);
                 map.addAttribute("exitoStatus", "true");
                 map.addAttribute("exitoMessage", "Se ha registrado la informacion sin imagen con exito");
                 return "registrarInfo.html";
@@ -83,4 +84,10 @@ public class AdminController {
         }
 
     }
+   @GetMapping("/admin/adminPanel/registrarInfo/editar/{id}")
+   public String editar(@PathVariable("id") Integer id,  ModelMap map){
+       Informacion info = infoServicio.listarInfoPorId(id);
+       map.addAttribute("info", info);
+       return "editarInfo.html";
+   }
 }

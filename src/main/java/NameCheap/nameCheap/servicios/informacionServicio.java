@@ -68,4 +68,14 @@ public class InformacionServicio {
     public List<Informacion> listarInfo(){
         return informacionRepositorio.findAll();
     }
+
+    public Informacion listarInfoPorId(Integer id) {
+       Optional<Informacion> infoRes = informacionRepositorio.findById(id);
+       if(infoRes.isPresent()){
+           Informacion info = infoRes.get();
+           return info;
+       }else{
+           return null;
+       }
+    }
 }
