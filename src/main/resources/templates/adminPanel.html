@@ -104,14 +104,22 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                                     </span>
                                                 </td>
                                                 <td>
-                                                    <form>
-                                                        <button id='editar' name="editar">
-                                                            <a th:href="@{|/admin/adminPanel/registrarInfo/editar/${info.id}|}">Editar</a>
+                                                    
+                                                        <button id='editarImg' name="editarImg">
+                                                            <a th:href="@{|/admin/adminPanel/registrarInfo/editarImg/${info.id}|}">Edit images</a>
                                                         </button>
-                                                    </form>
-                                                    <form th:action="@{|/admin/adminPanel/eliminar/${info.id}|}" method="post">
-                                                        <button id='eliminar' name="eliminar">Eliminar</button>
-                                                    </form>
+                                                        <button id='anadirImg' name="anadirImg">
+                                                            <a th:href="@{|/admin/adminPanel/registrarInfo/anadirImg/${info.id}|}">Add images</a>
+                                                        </button>
+                                                    
+                                                    
+                                                        <button id='editar' name="editar">
+                                                            <a th:href="@{|/admin/adminPanel/registrarInfo/editar/${info.id}|}">Edit info</a>
+                                                        </button>
+                                                        
+                                                        <form th:action="@{|/admin/adminPanel/eliminar/${info.id}|}" method="post">
+                                                            <button id='eliminar' name="eliminar">Delete info</button>
+                                                        </form>
                                                 </td>
                                             </tr>
                                         </tbody>

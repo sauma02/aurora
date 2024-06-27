@@ -40,7 +40,12 @@ public class AdminController {
     public String admin(@AuthenticationPrincipal UserDetails userDetails, ModelMap map) {
         String username = userDetails.getUsername();
         map.addAttribute("username", username);
-        return "admin.html";
+        if(username != null){
+            return "admin.html";
+        }else{
+            return "redirect:/";
+        }
+        
     }
 
     @GetMapping("/admin/adminPanel")
@@ -57,7 +62,40 @@ public class AdminController {
         return "registrarInfo.html";
 
     }
-
+    @GetMapping("/admin/adminPanel/registrarInfo/anadirImg/{id}")
+    public String anadirImagenes(@PathVariable("id") Integer id, ModelMap map){
+        Informacion info = infoServicio.listarInfoPorId(id);
+        List<Imagen> imagenes = info.getImagen();
+        map.addAttribute("info", info);
+        map.addAttribute("imagenes", imagenes);
+        return "anadirImagenes.html";
+    }
+    @PostMapping("/admin/adminPanel/registrarInfo/editar/edit")
+    public String edit(@RequestParam("id") Integer id, @RequestParam("titulo") 
+            String titulo, @RequestParam("seccion") String seccion, @RequestParam("texto") String texto, @RequestParam("iconoServicio") String inconoServicio, ModelMap map){
+        try{
+        Informacion info = infoServicio.listarInfoPorId(id);
+        info.setIconoServicio(inconoServicio);
+        info.setSeccion(seccion);
+        info.setTexto(texto);
+        info.setTitulo(titulo);
+        map.addAttribute("info", info);
+        map.addAttribute("errorStatus", "false");
+        map.addAttribute("errorMessage", "Edited info successfully");
+        return "editarInfo.html";
+        }catch(Exception e){
+            e.getCause();
+            if(e.getCause() != null){
+                System.err.println("Error: "+e.getCause().getMessage());
+            }
+        Informacion info = infoServicio.listarInfoPorId(id);
+        map.addAttribute("info", info);
+        map.addAttribute("errorStatus", "true");
+        map.addAttribute("errorMessage", "Unexpected error: "+e.getMessage());
+        return "editarInfo.html";
+            
+        }
+    }
     @PostMapping("/admin/adminPanel/registrarInfo/regis")
     public String registrarInfo(@RequestParam("titulo") String titulo, @RequestParam("seccion") String seccion, @RequestParam("texto") String texto,
             @RequestParam("iconoServicio") String inconoServicio, @RequestParam("imagen") MultipartFile imagen, ModelMap map) {
@@ -145,6 +183,80 @@ public class AdminController {
         }
 
     }
+    @PostMapping("/admin/adminPanel/registrarInfo/editar/anadirImagen")
+    public String añadirImagen(@RequestParam("id") Integer id, @RequestParam("imagen[]") MultipartFile [] imagenes, ModelMap map){
+        try {
+            
+            Informacion info = infoServicio.listarInfoPorId(id);
+            List<Imagen> listaImg = info.getImagen();
+            storageService.init();
+            for (Imagen imagen : listaImg) {
+                for (MultipartFile file : imagenes) {
+                    Imagen imagenNueva = new Imagen();
+                    storageService.save(file);
+                    imagenNueva.setNombreImagen(storageService.listOneFile(file).getOriginalFilename());
+                    imagenNueva = imagenServicio.crearImagen(imagenNueva, info, file);
+                    listaImg.add(imagenNueva);
+                }
+                
+            }
+            info.setImagen(listaImg);
+            infoServicio.editarInfo(info);
+            map.addAttribute("info", info);
+            map.addAttribute("imagenes", listaImg);
+            map.addAttribute("errorStatus", "false");
+            map.addAttribute("errorMessage", "Files added successfully");
+            return "anadirImagenes.html";
+        } catch (Exception e) {
+            e.getCause();
+            if(e.getCause() != null){
+                System.err.println("Error: "+e.getCause().getMessage());
+            }
+            
+            Informacion info = infoServicio.listarInfoPorId(id);
+            List<Imagen> listaImg = info.getImagen();
+            map.addAttribute("info", info);
+            map.addAttribute("imagenes", listaImg);
+            map.addAttribute("errorStatus", "true");
+            map.addAttribute("errorMessage", "Error: "+e.getMessage());
+            return "anadirImagenes.html";
+        }
+    }
+    @PostMapping("/admin/adminPanel/registrarInfo/editar/añadirImagenIndividual")
+    public String añadirImagenSola(@RequestParam("infoId") Integer id, @RequestParam("imagen[]") MultipartFile[] imagenes, ModelMap map){
+        try {
+            Informacion info = infoServicio.listarInfoPorId(id);
+            storageService.init();
+            List<Imagen> listaImg = new ArrayList();
+            for (Imagen img : listaImg) {
+                for (MultipartFile file : imagenes) {
+                    storageService.save(file);
+                    img.setNombreImagen(storageService.listOneFile(file).getOriginalFilename());
+                    imagenServicio.crearImagen(img, info, file);
+                    listaImg.add(img);
+                }
+            }
+            
+            info.setImagen(listaImg);
+            infoServicio.editarInfo(info);
+            map.addAttribute("info", info);
+            map.addAttribute("errorStatus", "false");
+            map.addAttribute("errorMessage", "Files added successfully");
+            return "editarInfo.html";
+        } catch (Exception e) {
+            e.getCause();
+            if(e.getCause() != null){
+            System.err.println("Error: "+e.getCause().getMessage());
+        }
+            Imagen img = imagenServicio.imagenPorId(id);
+            Informacion info = img.getInfo();
+            map.addAttribute("info", info);
+            map.addAttribute("errorStatus", "true");
+            map.addAttribute("errorMessage", "Error: "+e.getMessage());
+            return "editarInfo.html";
+        }
+ 
+    }
     @PostMapping("/admin/adminPanel/registrarInfo/editar/eliminar/{id}")
     public String eliminar(@PathVariable("id") Integer id, ModelMap map){
         try{
@@ -154,9 +266,9 @@ public class AdminController {
         for (Imagen imagen : imgLista) {
             if(img.equals(imagen)){
                 imgLista.remove(imagen);
+                
                 imagenServicio.eliminarImagen(imagen);
-                imagenServicio.eliminarImagen(img);
-                storageService.delete(img);
+                storageService.delete(imagen);
                 
             }
         }

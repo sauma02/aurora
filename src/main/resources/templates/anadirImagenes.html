@@ -1,0 +1,117 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+                <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+                    <script src="https://kit.fontawesome.com/92c15939e4.js" crossorigin="anonymous"></script>
+                    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+
+                    <!-- fonts style -->
+                    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+                        <!--owl slider stylesheet -->
+
+                        <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+
+                        <!-- fonts style -->
+                        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+                            <!--owl slider stylesheet -->
+                            <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+
+                            <!-- font awesome style -->
+                            <link href="css/font-awesome.min.css" rel="stylesheet" />
+
+                            <!-- Custom styles for this template -->
+                            <link href="css/style.css" rel="stylesheet" />
+                            <!-- responsive style -->
+                            <link href="css/responsive.css" rel="stylesheet" />
+                            </head>
+                            <body>
+                                <div class="header_bottom">
+                                    <div class="container-fluid">
+                                        <nav class="navbar navbar-expand-lg custom_nav-container ">
+                                            <a class="navbar-brand" href="index.html">
+                                                <img src="images/logo.png" alt="">
+                                            </a>
+                                            </a>
+
+                                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                                <span class=""> </span>
+                                            </button>
+
+                                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                                <ul class="navbar-nav  ">
+                                                    <li class="nav-item active">
+                                                        <a class="nav-link" th:href="@{/admin/adminPanel}">Admin Panel<span class="sr-only">(current)</span></a>
+                                                    </li>
+
+
+                                                </ul>
+
+                                            </div>
+                                        </nav>
+                                    </div>
+                                </div>
+                                
+                                <div style="display: flex; justify-content: center;" class="w3-content w3-display-container">
+                                    <table id="panelDeManejo">
+                                        <thead>
+                                            <tr>
+                                                <th>Id</th>
+                                                <th>Title</th>
+                                                <th>Name</th>
+                                                <th>Info.id</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="imagen : ${imagenes}">
+                                                <td th:text="${imagen.id}"></td>
+                                                <td th:text="${imagen.titulo}"></td>
+                                                <td th:text="${imagen.nombreImagen}"></td>
+                                                <td th:text="${imagen.info.id}"></td>
+                                            </tr>
+                                            
+                                            <button id='anadirImg' name="anadirImg">
+                                                <a th:href="@{|/admin/adminPanel|}">Go back</a>
+                                            </button>
+                                            <form th:action="@{/admin/adminPanel/registrarInfo/editar/anadirImagen}" method="POST" enctype="multipart/form-data">
+                                                <input type="number" id="id" name="id" th:value="${info.id}" readonly>
+                                                <input type="file" id="imagen[]" name="imagen[]" multiple>
+                                                    <button type="submit">Add images</button>
+                                            </form>
+                                        </tbody>
+
+                                    </table>
+                                </div>
+
+                                <!-- Scripts -->
+
+                                <script th:inline="javascript">
+                                    console.log("Exito status:", /*[[${errorStatus}]]*/);
+                                    console.log("Exito Info:", /*[[${errorMensaje}]]*/);
+
+                                    var exitoStatus = /*[[${errorStatus}]]*/ 'none';
+                                    var exitoMensaje = /*[[${errorMessage}]]*/ '';
+
+                                    if (exitoStatus === 'true') {
+                                        console.log("Exito: ", exitoMensaje);
+                                        Swal.fire("¡Éxito!", exitoMensaje, "success");
+                                    }
+                                    if (exitoStatus === 'false') {
+                                        console.log("Error: ", exitoMensaje);
+                                        Swal.fire("¡Error!", exitoMensaje, "error");
+                                    }
+                                </script>
+                                </div>
+                            </body>
+                            </html>
