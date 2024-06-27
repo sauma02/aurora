@@ -57,13 +57,8 @@ public class InformacionServicio {
             informacionRepositorio.save(informacion);
         }
     }
-    public void eliminarInfo(Integer id){
-        Optional<Informacion> resInfo = informacionRepositorio.findById(id);
-        if(resInfo.isPresent()){
-            Informacion informacion = resInfo.get();
-            informacionRepositorio.delete(informacion);
-            
-        }
+        public void eliminarInfo(Informacion info){
+        informacionRepositorio.delete(info);
     }
     public List<Informacion> listarInfo(){
         return informacionRepositorio.findAll();

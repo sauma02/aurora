@@ -5,10 +5,13 @@
 package NameCheap.nameCheap.controladores;
 
 import NameCheap.nameCheap.config.MySimpleAuthenticationSuccessHandler;
+import NameCheap.nameCheap.entidades.Informacion;
 import NameCheap.nameCheap.entidades.Usuario;
+import NameCheap.nameCheap.servicios.InformacionServicio;
 import NameCheap.nameCheap.servicios.UsuarioServicio;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,16 +34,22 @@ public class PortalController {
     @Autowired
     private UsuarioServicio usuarioServicio;
     @Autowired
+    private InformacionServicio infoServicio;
+    @Autowired
     private AuthenticationManager authenticationManager;
       @Autowired 
     private MySimpleAuthenticationSuccessHandler authenticationSuccessHandler;
     
    @GetMapping("/")
-   public String inicio(){
+   public String inicio(ModelMap map){
+       List<Informacion> listaInfo = infoServicio.listarInfo();
+       map.addAttribute("listaInfo", listaInfo);
        return "index.html";
    }
    @GetMapping("/portafolio")
-   public String portafolio (){
+   public String portafolio (ModelMap map){
+       List<Informacion> listaInfo = infoServicio.listarInfo();
+       map.addAttribute("listaInfo", listaInfo);
        return "portafolio.html";
    }
    @GetMapping("/login")

@@ -97,7 +97,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                                 <td>
                                                     <span th:each="imagen : ${info.imagen}">
                                                         <span  th:if="${imagen?.nombreImagen != null}">
-                                                            <img style="width: 200px; position: relative; vertical-align: middle;" th:src="@{'/img/' + ${imagen.nombreImagen}}" th:alt="${'Imagen de '+ {info.titulo}}">
+                                                            <img style="width: 200px; position: relative; vertical-align: middle;" th:src="@{'images/' + ${imagen.nombreImagen}}" th:alt="${'Imagen de '+ {info.titulo}}">
 
                                                         </span>
                                                         <span th:unless="${imagen?.nombreImagen != null}">No hay imagenes registradas</span>
@@ -105,9 +105,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                                 </td>
                                                 <td>
                                                     
-                                                        <button id='editarImg' name="editarImg">
-                                                            <a th:href="@{|/admin/adminPanel/registrarInfo/editarImg/${info.id}|}">Edit images</a>
-                                                        </button>
+                                                        
                                                         <button id='anadirImg' name="anadirImg">
                                                             <a th:href="@{|/admin/adminPanel/registrarInfo/anadirImg/${info.id}|}">Add images</a>
                                                         </button>

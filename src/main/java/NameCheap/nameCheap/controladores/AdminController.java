@@ -40,12 +40,12 @@ public class AdminController {
     public String admin(@AuthenticationPrincipal UserDetails userDetails, ModelMap map) {
         String username = userDetails.getUsername();
         map.addAttribute("username", username);
-        if(username != null){
+        if (username != null) {
             return "admin.html";
-        }else{
+        } else {
             return "redirect:/";
         }
-        
+
     }
 
     @GetMapping("/admin/adminPanel")
@@ -62,40 +62,49 @@ public class AdminController {
         return "registrarInfo.html";
 
     }
+    
+    @GetMapping("/admin/adminPanel/registrarInfo/editar/{id}")
+    public String editar(@PathVariable("id") Integer id, ModelMap map) {
+        Informacion info = infoServicio.listarInfoPorId(id);
+        map.addAttribute("info", info);
+        return "editarInfo.html";
+    }
+    
     @GetMapping("/admin/adminPanel/registrarInfo/anadirImg/{id}")
-    public String anadirImagenes(@PathVariable("id") Integer id, ModelMap map){
+    public String anadirImagenes(@PathVariable("id") Integer id, ModelMap map) {
         Informacion info = infoServicio.listarInfoPorId(id);
         List<Imagen> imagenes = info.getImagen();
         map.addAttribute("info", info);
         map.addAttribute("imagenes", imagenes);
         return "anadirImagenes.html";
     }
+
     @PostMapping("/admin/adminPanel/registrarInfo/editar/edit")
-    public String edit(@RequestParam("id") Integer id, @RequestParam("titulo") 
-            String titulo, @RequestParam("seccion") String seccion, @RequestParam("texto") String texto, @RequestParam("iconoServicio") String inconoServicio, ModelMap map){
-        try{
-        Informacion info = infoServicio.listarInfoPorId(id);
-        info.setIconoServicio(inconoServicio);
-        info.setSeccion(seccion);
-        info.setTexto(texto);
-        info.setTitulo(titulo);
-        map.addAttribute("info", info);
-        map.addAttribute("errorStatus", "false");
-        map.addAttribute("errorMessage", "Edited info successfully");
-        return "editarInfo.html";
-        }catch(Exception e){
+    public String edit(@RequestParam("id") Integer id, @RequestParam("titulo") String titulo, @RequestParam("seccion") String seccion, @RequestParam("texto") String texto, @RequestParam("iconoServicio") String inconoServicio, ModelMap map) {
+        try {
+            Informacion info = infoServicio.listarInfoPorId(id);
+            info.setIconoServicio(inconoServicio);
+            info.setSeccion(seccion);
+            info.setTexto(texto);
+            info.setTitulo(titulo);
+            map.addAttribute("info", info);
+            map.addAttribute("errorStatus", "false");
+            map.addAttribute("errorMessage", "Edited info successfully");
+            return "editarInfo.html";
+        } catch (Exception e) {
             e.getCause();
-            if(e.getCause() != null){
-                System.err.println("Error: "+e.getCause().getMessage());
+            if (e.getCause() != null) {
+                System.err.println("Error: " + e.getCause().getMessage());
             }
-        Informacion info = infoServicio.listarInfoPorId(id);
-        map.addAttribute("info", info);
-        map.addAttribute("errorStatus", "true");
-        map.addAttribute("errorMessage", "Unexpected error: "+e.getMessage());
-        return "editarInfo.html";
-            
+            Informacion info = infoServicio.listarInfoPorId(id);
+            map.addAttribute("info", info);
+            map.addAttribute("errorStatus", "true");
+            map.addAttribute("errorMessage", "Unexpected error: " + e.getMessage());
+            return "editarInfo.html";
+
         }
     }
+
     @PostMapping("/admin/adminPanel/registrarInfo/regis")
     public String registrarInfo(@RequestParam("titulo") String titulo, @RequestParam("seccion") String seccion, @RequestParam("texto") String texto,
             @RequestParam("iconoServicio") String inconoServicio, @RequestParam("imagen") MultipartFile imagen, ModelMap map) {
@@ -124,11 +133,34 @@ public class AdminController {
 
     }
 
-    @GetMapping("/admin/adminPanel/registrarInfo/editar/{id}")
-    public String editar(@PathVariable("id") Integer id, ModelMap map) {
-        Informacion info = infoServicio.listarInfoPorId(id);
-        map.addAttribute("info", info);
-        return "editarInfo.html";
+    @PostMapping("/admin/adminPanel/eliminar/{id}")
+    public String eliminarInfo(@PathVariable("id") Integer id, ModelMap map){
+        try {
+            Informacion info = infoServicio.listarInfoPorId(id);
+            List<Imagen> imagenes = info.getImagen();
+            for (Imagen img : imagenes) {
+                imagenes.remove(img);
+                imagenServicio.eliminarImagen(img);
+            }
+            infoServicio.eliminarInfo(info);
+            List<Informacion> infoLista = infoServicio.listarInfo();
+            map.addAttribute("errorStatus", "false");
+            map.addAttribute("errorMessage", "Info deleted successfully");
+            map.addAttribute("infoLista", infoLista);
+            return "adminPanel.html";
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            if(e.getCause() != null){
+                System.err.println("Error: "+e.getCause().getMessage());
+            }
+            List<Informacion> infoLista = infoServicio.listarInfo();
+            map.addAttribute("infoLista", infoLista);
+            map.addAttribute("errorStatus", "true");
+            map.addAttribute("errorMessage", "Unexpected error: "+e.getMessage());
+            return "adminPanel.html";
+        
+        }
     }
 
     @PostMapping("/admin/adminPanel/registrarInfo/editar/editarImagen")
@@ -137,93 +169,119 @@ public class AdminController {
             storageService.init();
             Imagen img = imagenServicio.imagenPorId(imagenId);
             Informacion info = img.getInfo();
-            
+
             List<Imagen> listaImagen = info.getImagen();
-            if(imagen.getOriginalFilename() == img.getNombreImagen()){
+            if (imagen.getOriginalFilename() == img.getNombreImagen()) {
                 map.addAttribute("info", info);
+                map.addAttribute("imagenes", listaImagen);
                 map.addAttribute("errorStatus", "true");
                 map.addAttribute("errorMessage", "Uploaded file is the same as the one in the folder");
                 return "editarInfo.html";
-            }else{
+            } else {
                 for (Imagen imagen1 : listaImagen) {
-                    if(img.equals(imagen1)){
+                    if (img.equals(imagen1)) {
                         listaImagen.remove(imagen1);
                         Imagen imgNueva = new Imagen();
                         storageService.save(imagen);
                         imagenServicio.crearImagen(imgNueva, info, imagen);
                         listaImagen.add(imgNueva);
-                        
-                        
-                        
+
                     }
-                    
+
                 }
-                
+
                 info.setSeccion(info.getSeccion());
                 info.setTexto(info.getTexto());
                 info.setIconoServicio(info.getIconoServicio());
                 info.setTitulo(info.getTitulo());
                 info.setImagen(listaImagen);
+                map.addAttribute("info", info);
+                map.addAttribute("imagenes", listaImagen);
                 map.addAttribute("errorStatus", "false");
                 map.addAttribute("errorMessage", "Image edited succesfully");
                 infoServicio.editarInfo(info);
-                return "editarInfo.html";
+                return "anadirImagenes.html";
             }
-            
 
         } catch (Exception e) {
             e.getCause();
-            
-            if(e.getCause() != null){
-                System.err.println("Error: "+e.getCause().getMessage());
+
+            if (e.getCause() != null) {
+                System.err.println("Error: " + e.getCause().getMessage());
             }
+           
+            Imagen img = imagenServicio.imagenPorId(imagenId);
+             Informacion info = img.getInfo();
+            List<Imagen> listaImagen = info.getImagen();
+            map.addAttribute("info", info);
+            map.addAttribute("imagenes", listaImagen);
             map.addAttribute("errorStatus", "true");
-            map.addAttribute("errorMessage", "Error: "+e.getMessage());
-            return "editarInfo.html";
+            map.addAttribute("errorMessage", "Error: " + e.getMessage());
+            return "anadirImagenes";
         }
 
     }
+
     @PostMapping("/admin/adminPanel/registrarInfo/editar/anadirImagen")
-    public String añadirImagen(@RequestParam("id") Integer id, @RequestParam("imagen[]") MultipartFile [] imagenes, ModelMap map){
+    public String añadirImagen(@RequestParam("id") Integer id, @RequestParam("imagen[]") MultipartFile[] imagenes, ModelMap map) {
         try {
-            
+
             Informacion info = infoServicio.listarInfoPorId(id);
             List<Imagen> listaImg = info.getImagen();
             storageService.init();
-            for (Imagen imagen : listaImg) {
-                for (MultipartFile file : imagenes) {
-                    Imagen imagenNueva = new Imagen();
-                    storageService.save(file);
-                    imagenNueva.setNombreImagen(storageService.listOneFile(file).getOriginalFilename());
-                    imagenNueva = imagenServicio.crearImagen(imagenNueva, info, file);
-                    listaImg.add(imagenNueva);
-                }
+            if (listaImg.isEmpty()) {
+                    for (MultipartFile file : imagenes) {
+                        Imagen img = new Imagen();
+                        storageService.save(file);
+                        img.setNombreImagen(storageService.listOneFile(file).getOriginalFilename());
+                        imagenServicio.crearImagen(img, info, file);
+                        listaImg.add(img);
+                    }
                 
+                info.setImagen(listaImg);
+                infoServicio.editarInfo(info);
+                map.addAttribute("info", info);
+                map.addAttribute("imagenes", listaImg);
+                map.addAttribute("errorStatus", "false");
+                map.addAttribute("errorMessage", "Files added successfully");
+                return "anadirImagenes.html";
+            } else {
+                for (Imagen imagen : listaImg) {
+                    for (MultipartFile file : imagenes) {
+                        Imagen imagenNueva = new Imagen();
+                        storageService.save(file);
+                        imagenNueva.setNombreImagen(storageService.listOneFile(file).getOriginalFilename());
+                        imagenServicio.crearImagen(imagenNueva, info, file);
+                        listaImg.add(imagenNueva);
+                    }
+
+                }
+                info.setImagen(listaImg);
+                infoServicio.editarInfo(info);
+                map.addAttribute("info", info);
+                map.addAttribute("imagenes", listaImg);
+                map.addAttribute("errorStatus", "false");
+                map.addAttribute("errorMessage", "Files added successfully");
+                return "anadirImagenes.html";
             }
-            info.setImagen(listaImg);
-            infoServicio.editarInfo(info);
-            map.addAttribute("info", info);
-            map.addAttribute("imagenes", listaImg);
-            map.addAttribute("errorStatus", "false");
-            map.addAttribute("errorMessage", "Files added successfully");
-            return "anadirImagenes.html";
         } catch (Exception e) {
             e.getCause();
-            if(e.getCause() != null){
-                System.err.println("Error: "+e.getCause().getMessage());
+            if (e.getCause() != null) {
+                System.err.println("Error: " + e.getCause().getMessage());
             }
-            
+
             Informacion info = infoServicio.listarInfoPorId(id);
             List<Imagen> listaImg = info.getImagen();
             map.addAttribute("info", info);
             map.addAttribute("imagenes", listaImg);
             map.addAttribute("errorStatus", "true");
-            map.addAttribute("errorMessage", "Error: "+e.getMessage());
+            map.addAttribute("errorMessage", "Error: " + e.getMessage());
             return "anadirImagenes.html";
         }
     }
+
     @PostMapping("/admin/adminPanel/registrarInfo/editar/añadirImagenIndividual")
-    public String añadirImagenSola(@RequestParam("infoId") Integer id, @RequestParam("imagen[]") MultipartFile[] imagenes, ModelMap map){
+    public String añadirImagenSola(@RequestParam("infoId") Integer id, @RequestParam("imagen[]") MultipartFile[] imagenes, ModelMap map) {
         try {
             Informacion info = infoServicio.listarInfoPorId(id);
             storageService.init();
@@ -236,7 +294,7 @@ public class AdminController {
                     listaImg.add(img);
                 }
             }
-            
+
             info.setImagen(listaImg);
             infoServicio.editarInfo(info);
             map.addAttribute("info", info);
@@ -245,46 +303,47 @@ public class AdminController {
             return "editarInfo.html";
         } catch (Exception e) {
             e.getCause();
-            if(e.getCause() != null){
-            System.err.println("Error: "+e.getCause().getMessage());
-        }
+            if (e.getCause() != null) {
+                System.err.println("Error: " + e.getCause().getMessage());
+            }
             Imagen img = imagenServicio.imagenPorId(id);
             Informacion info = img.getInfo();
             map.addAttribute("info", info);
             map.addAttribute("errorStatus", "true");
-            map.addAttribute("errorMessage", "Error: "+e.getMessage());
+            map.addAttribute("errorMessage", "Error: " + e.getMessage());
             return "editarInfo.html";
         }
- 
+
     }
-    @PostMapping("/admin/adminPanel/registrarInfo/editar/eliminar/{id}")
-    public String eliminar(@PathVariable("id") Integer id, ModelMap map){
-        try{
-        Imagen img = imagenServicio.imagenPorId(id);
-        Informacion info = img.getInfo();
-        List<Imagen> imgLista = info.getImagen();
-        for (Imagen imagen : imgLista) {
-            if(img.equals(imagen)){
-                imgLista.remove(imagen);
-                
-                imagenServicio.eliminarImagen(imagen);
-                storageService.delete(imagen);
-                
+
+    @PostMapping("/admin/adminPanel/registrarInfo/editar/eliminarImagen/{id}")
+    public String eliminar(@PathVariable("id") Integer id, ModelMap map) {
+        try {
+            Imagen img = imagenServicio.imagenPorId(id);
+            Informacion info = img.getInfo();
+            List<Imagen> imgLista = info.getImagen();
+            for (Imagen imagen : imgLista) {
+                if (img.equals(imagen)) {
+                    imgLista.remove(imagen);
+
+                    imagenServicio.eliminarImagen(imagen);
+                    storageService.delete(imagen);
+
+                }
             }
-        }
-        info.setImagen(imgLista);
-        infoServicio.editarInfo(info);
-        map.addAttribute("errorStatus", "false");
-        map.addAttribute("errorMessage", "Image deleted succesfully");
-        return "editarInfo.html";
-        }catch(Exception e){
+            info.setImagen(imgLista);
+            infoServicio.editarInfo(info);
+            map.addAttribute("errorStatus", "false");
+            map.addAttribute("errorMessage", "Image deleted succesfully");
+            return "anadirImagenes.html";
+        } catch (Exception e) {
             e.getCause();
-                    if(e.getCause() != null){
-                        System.err.println("Error: "+e.getCause().getMessage());
-                    }
-                    map.addAttribute("errorStatus", "true");
-                    map.addAttribute("errorMessage", "Error: "+e.getMessage());
-                    return "editarInfo.html";
+            if (e.getCause() != null) {
+                System.err.println("Error: " + e.getCause().getMessage());
+            }
+            map.addAttribute("errorStatus", "true");
+            map.addAttribute("errorMessage", "Error: " + e.getMessage());
+            return "anadirImagenes.html";
         }
     }
 }
