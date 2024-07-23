@@ -1,0 +1,218 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+                <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+                    <script src="https://kit.fontawesome.com/92c15939e4.js" crossorigin="anonymous"></script>
+                    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+
+                    <!-- fonts style -->
+                    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+                        <!--owl slider stylesheet -->
+
+                        <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+
+                        <!-- fonts style -->
+                        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+                            <!--owl slider stylesheet -->
+                            <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+                            <link rel="icon" th:href="@{'images/logo.png'}" type="image/x-icon">
+                            <!-- font awesome style -->
+                            <link href="css/font-awesome.min.css" rel="stylesheet" />
+
+                            <!-- Custom styles for this template -->
+                            <link href="css/style.css" rel="stylesheet" />
+                            <!-- responsive style -->
+                            <link href="css/responsive.css" rel="stylesheet" />
+                            </head>
+                            <body>
+                                <div class="header_bottom">
+                                    <div class="container-fluid">
+                                        <nav class="navbar navbar-expand-lg custom_nav-container">
+                                            <a class="navbar-brand" href="index.html">
+                                                <img src="images/logo.png" alt="">
+                                            </a>
+                                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                                <span class=""></span>
+                                            </button>
+                                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                                <ul class="navbar-nav">
+                                                    <li class="nav-item active">
+                                                        <a class="nav-link" th:href="@{/admin/adminPanel}">Admin Panel<span class="sr-only">(current)</span></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </nav>
+                                    </div>
+                                </div>
+
+                                <div class="form-container">
+                                    <form th:action="@{/admin/adminPanel/registrarInfo/regis}" method="post" enctype="multipart/form-data">
+                                        <div class="form-group">
+                                            <label for="seccion">Section:</label>
+                                            <input type="text" id="seccion" name="seccion">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="titulo">Title:</label>
+                                            <input type="text" id="titulo" name="titulo">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="iconoServicio">Service Icon (Use this label just for the services area):</label>
+                                            <input type="text" id="iconoServicio" name="iconoServicio">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="texto">Text:</label>
+                                            <input type="text" id="texto" name="texto">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="imagen">Images:</label>
+                                            <input type="file" id="imagen" name="imagen" multiple>
+                                        </div>
+                                        <div class="form-buttons">
+                                            <button type="submit" name="save" value="save">Submit</button>
+                                            <button class="go-back"><a th:href="@{/admin/adminPanel}">Go back</a></button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <!-- JavaScript -->
+                                <script th:inline="javascript">
+                                    console.log("Exito status:", /*[[${exitoStatus}]]*/);
+                                    console.log("Exito Info:", /*[[${exitoMensaje}]]*/);
+
+                                    var exitoStatus = /*[[${exitoStatus}]]*/ 'none';
+                                    var exitoMensaje = /*[[${exitoMessage}]]*/ '';
+
+                                    if (exitoStatus === 'true') {
+                                        console.log("Exito: ", exitoMensaje);
+                                        Swal.fire("¡Éxito!", exitoMensaje, "success");
+                                    }
+                                    if (exitoStatus === 'false') {
+                                        console.log("Error: ", exitoMensaje);
+                                        Swal.fire("¡Error!", exitoMensaje, "error");
+                                    }
+                                </script>
+                                <style>
+                                    * {
+                                        box-sizing: border-box;
+                                    }
+
+                                    body {
+                                        font-family: 'Roboto', sans-serif;
+                                        margin: 0;
+                                        padding: 0;
+                                        background-color: #f0f0f0;
+                                    }
+
+                                    .header_bottom {
+                                        background-color: #fff;
+                                        padding: 10px 0;
+                                        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                                    }
+
+                                    .navbar-brand img {
+                                        max-height: 50px;
+                                    }
+
+                                    .navbar-nav .nav-item .nav-link {
+                                        color: #333;
+                                        font-weight: 500;
+                                    }
+
+                                    .form-container {
+                                        max-width: 600px;
+                                        margin: 50px auto;
+                                        padding: 20px;
+                                        background-color: white;
+                                        border-radius: 8px;
+                                        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                                    }
+
+                                    .form-group {
+                                        margin-bottom: 15px;
+                                    }
+
+                                    .form-group label {
+                                        display: block;
+                                        margin-bottom: 5px;
+                                        font-weight: 500;
+                                    }
+
+                                    .form-group input {
+                                        width: 100%;
+                                        padding: 10px;
+                                        border: 1px solid #ddd;
+                                        border-radius: 5px;
+                                        font-size: 16px;
+                                    }
+
+                                    .form-buttons {
+                                        display: flex;
+                                        justify-content: space-between;
+                                        align-items: center;
+                                        margin-top: 20px;
+                                    }
+
+                                    button {
+                                        padding: 10px 20px;
+                                        background-color: #333;
+                                        color: white;
+                                        border: none;
+                                        border-radius: 5px;
+                                        cursor: pointer;
+                                        font-size: 16px;
+                                    }
+
+                                    button a {
+                                        color: white;
+                                        text-decoration: none;
+                                    }
+
+                                    button:hover {
+                                        background-color: #575757;
+                                    }
+
+                                    button.go-back {
+                                        background-color: #ddd;
+                                        color: #333;
+                                    }
+
+                                    button.go-back:hover {
+                                        background-color: #ccc;
+                                    }
+
+                                    /* Responsive Design */
+                                    @media (max-width: 768px) {
+                                        .form-container {
+                                            padding: 15px;
+                                        }
+
+                                        .form-buttons {
+                                            flex-direction: column;
+                                            align-items: stretch;
+                                        }
+
+                                        button {
+                                            width: 100%;
+                                            margin-bottom: 10px;
+                                        }
+
+                                        button.go-back {
+                                            margin-bottom: 0;
+                                        }
+                                    }
+
+                                </style>
+                            </body>
+                            </html>

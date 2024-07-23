@@ -1,0 +1,16 @@
+version: '3'
+services:
+  aurora:
+    build: Aurora
+    mem_limit: 512m
+    ports:
+      - '1012:1012'
+    environment:
+      DB_USERNAME: u949606062_admin2
+      DB_PASSWORD: Supergamo123.
+      SV_PORT: 1012
+      SV_IP: 213.210.13.192
+      DB_NAME: jdbc:mysql://srv1069.hstgr.io:3306/u949606062_aurora?zeroDateTimeBehavior=CONVERT_TO_NULL
+      J_MAIL: auroraSupport@auroramarblegranite.com
+      J_MAIL_PASS: Supergamo123.
+    restart: always

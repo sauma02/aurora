@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <!-- Basic -->
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <!-- Mobile Metas -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <!-- Site Metas -->
+        <meta name="keywords" content="" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+
+        <title>Aurora</title>
+
+        <script src="https://kit.fontawesome.com/92c15939e4.js" crossorigin="anonymous"></script>
+
+
+        <!-- bootstrap core css -->
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+        <link rel="icon" th:href="@{'images/logo.png'}" type="image/x-icon">
+
+            <!-- fonts style -->
+            <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+                <!--owl slider stylesheet -->
+                <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+                <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+                <!-- font awesome style -->
+                <link href="css/font-awesome.min.css" rel="stylesheet" />
+
+                <!-- Custom styles for this template -->
+                <link href="css/style.css" rel="stylesheet" />
+                <!-- responsive style -->
+                <link href="css/responsive.css" rel="stylesheet" />
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+                </head>
+
+                <body>
+
+                    <div class="hero_area">
+                        <!-- header section strats -->
+                        <header class="header_section">
+                            <div class="header_top">
+                                <div class="container-fluid header_top_container">
+
+                                    <div class="contact_nav">
+                                        <a href="">
+                                            <i class="fa fa-phone" aria-hidden="true"></i>
+                                            <span th:each="info : ${listaInfo}" th:if="${info.seccion == 'media' && info.titulo == 'tel'}"
+                                                  th:text="${info.texto}">
+
+                                            </span>
+                                        </a>
+                                        <a href="">
+                                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                                            <span th:each="info : ${listaInfo}" th:if="${info.seccion == 'media' && info.titulo == 'email'}"
+                                                  th:text="${info.texto}">
+
+                                            </span>
+                                        </a>
+
+                                    </div>
+                                    <div class="social_box">
+                                        <ul class="icons">
+                                            <li th:each="info : ${listaInfo}" th:if="${info.seccion == 'social'}">
+                                                <a style="font-size: xx-large;" th:href="${info.texto}" >
+                                                    <i th:class="${info.iconoServicio}" ></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="header_bottom">
+                                <div class="container-fluid">
+                                    <nav class="navbar navbar-expand-lg custom_nav-container ">
+                                        <a class="navbar-brand" href="/">
+                                            <div  class="container-fluid" th:each="info : ${listaInfo}" th:if="${info.seccion == 'logo'}">
+                                                <img th:each="imagen : ${info.imagen}" 
+                                                     th:src="@{'/images/' + ${imagen.nombreImagen}}" 
+                                                     alt="">
+                                            </div>
+                                        </a>
+
+
+                                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                            <span class=""> </span>
+                                        </button>
+
+                                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                            <ul class="navbar-nav">
+                                                 <li class="nav-item">
+                                                <a class="" href="/">Home <span class="sr-only"></span></a>
+                                                 </li>
+                                                <li class="nav-item active">
+                                                    <a class="nav-link" href="#" onclick="showSection('quartz')">Quartz</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="#" onclick="showSection('marble')">Marble</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="#" onclick="showSection('granite')">Granite</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="#" onclick="showSection('soapstone')">Soapstone</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="/login">Login</a>
+                                                </li>
+                                            </ul>
+
+                                        </div>
+                                    </nav>
+                                </div>
+                            </div>
+                        </header>
+                        <!-- end header section -->
+                        <!-- slider -->
+
+
+                        <!-- end service section -->
+                        <!-- about section -->
+
+                        <section id="quartz" class="about_section section">
+                            <div class="container">
+                                <div class="heading_container">
+                                    <h2>Quartz</h2>
+                                </div>
+                                <span th:each="info : ${listaInfo}" th:if="${info.seccion == 'quartz'}">
+                                    <p th:text="${info.texto}"></p>
+                                </span>
+                                <!-- Gallery -->
+                                <div class="gallery-image" id="quartz-gallery">
+                                    <span th:each="info : ${listaInfo}" th:if="${info.seccion == 'quartz'}">
+                                        <div th:each="images : ${info.imagen}" class="img-box">
+                                            <img th:src="@{'/images/' + ${images.nombreImagen}}" alt="" />
+                                            <div class="transparent-box">
+                                                <div class="caption">
+                                                    <p th:text="${info.titulo}"></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </span>
+                                </div>
+                                <div class="pagination" id="quartz-pagination"></div>
+                            </div>
+                        </section>
+
+                        <section id="marble" class="about_section section">
+                            <div class="container">
+                                <div class="heading_container">
+                                    <h2>Marble</h2>
+                                </div>
+                                <span th:each="info : ${listaInfo}" th:if="${info.seccion == 'marble'}">
+                                    <p th:text="${info.texto}"></p>
+                                </span>
+                                <!-- Gallery -->
+                                <div class="gallery-image" id="marble-gallery">
+                                    <span th:each="info : ${listaInfo}" th:if="${info.seccion == 'marble'}">
+                                        <div th:each="images : ${info.imagen}" class="img-box">
+                                            <img th:src="@{'/images/' + ${images.nombreImagen}}" alt="" />
+                                            <div class="transparent-box">
+                                                <div class="caption">
+                                                    <p th:text="${info.titulo}"></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </span>
+                                </div>
+                                <div class="pagination" id="marble-pagination"></div>
+                            </div>
+                        </section>
+
+                        <section id="granite" class="about_section section">
+                            <div class="container">
+                                <div class="heading_container">
+                                    <h2>Granite</h2>
+                                </div>
+                                <span th:each="info : ${listaInfo}" th:if="${info.seccion == 'granite'}">
+                                    <p th:text="${info.texto}"></p>
+                                </span>
+                                <!-- Gallery -->
+                                <div class="gallery-image" id="granite-gallery">
+                                    <span th:each="info : ${listaInfo}" th:if="${info.seccion == 'granite'}">
+                                        <div th:each="images : ${info.imagen}" class="img-box">
+                                            <img th:src="@{'/images/' + ${images.nombreImagen}}" alt="" />
+                                            <div class="transparent-box">
+                                                <div class="caption">
+                                                    <p th:text="${info.titulo}"></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </span>
+                                </div>
+                                <div class="pagination" id="granite-pagination"></div>
+                            </div>
+                        </section>
+
+                        <section id="soapstone" class="about_section section">
+                            <div class="container">
+                                <div class="heading_container">
+                                    <h2>Soapstone</h2>
+                                </div>
+                                <span th:each="info : ${listaInfo}" th:if="${info.seccion == 'soapstone'}">
+                                    <p th:text="${info.texto}"></p>
+                                </span>
+                                <!-- Gallery -->
+                                <div class="gallery-image" id="soapstone-gallery">
+                                    <span th:each="info : ${listaInfo}" th:if="${info.seccion == 'soapstone'}">
+                                        <div th:each="images : ${info.imagen}" class="img-box">
+                                            <img th:src="@{'/images/' + ${images.nombreImagen}}" alt="" />
+                                            <div class="transparent-box">
+                                                <div class="caption">
+                                                    <p th:text="${info.titulo}"></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </span>
+                                </div>
+                                <div class="pagination" id="soapstone-pagination"></div>
+                            </div>
+                        </section>
+
+
+                        <!-- end project section -->
+
+
+
+                        <!-- info section -->
+                        <section id="nuestrasRedes" class="info_section ">
+                            <div class="container">
+                                <div class="contact_nav">
+                                    <a href="">
+                                        <i class="fa fa-phone" aria-hidden="true"></i>
+                                        <span th:each="info : ${listaInfo}" th:if="${info.seccion == 'media' && info.titulo == 'tel'}"
+                                              th:text="${info.texto}">
+
+                                        </span>
+                                    </a>
+                                    <a href="">
+                                        <i class="fa fa-envelope" aria-hidden="true"></i>
+                                        <span th:each="info : ${listaInfo}" th:if="${info.seccion == 'media' && info.titulo == 'email'}"
+                                              th:text="${info.texto}">
+
+                                        </span>
+                                    </a>
+                                </div>
+                                <div class="info_top ">
+                                    <div class="row info_main_row">
+                                        <div class="col-sm-6 col-md-4 col-lg-3">
+                                            <div class="info_links">
+                                                <h4>
+                                                    QUICK LINKS
+                                                </h4>
+                                                <div class="info_links_menu">
+                                                    <a class="" href="/">Home</a>
+                                                    <a class="" href="/#servicios">Services</a>
+                                                    <a class="" href="/#nosotros"> About</a>
+                                                    <a class="" href="/products">Products <span class="sr-only">(current)</span></a>
+                                                    <a class="" href="/#porqueNosotros">Why us?</a>
+                                                    <a class="" href="/#contactanos">Contact Us</a>
+                                                    <a class="" href="/#nuestrasRedes">Social media</a>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="info_bottom">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <div class="info_logo">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <div class="info_logo">
+                                                            <div  class="container-fluid" th:each="info : ${listaInfo}" th:if="${info.seccion == 'logo2'}">
+                                                                <img style="width: 200px;" th:each="imagen : ${info.imagen}" 
+                                                                     th:src="@{'/images/' + ${imagen.nombreImagen}}" 
+                                                                     alt="">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 ml-auto">
+                                                <div class="social_box">
+
+                                                    <span th:each="info : ${listaInfo}" th:if="${info.seccion == 'social'}">
+                                                        <a style="font-size: xx-large;" th:href="${info.texto}" >
+                                                            <i th:class="${info.iconoServicio}" aria-hidden="true"></i>
+                                                        </a>
+                                                    </span>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                        </section>
+                        <!-- end info_section -->
+
+
+                        <!-- footer section -->
+                        <footer class="footer_section">
+                            <div class="container">
+                                <p>
+                                    &copy; <span id="displayYear"></span> All Rights Reserved By Aurora Marble & Granite
+
+                                </p>
+                            </div>
+                        </footer>
+                        <!-- footer section -->
+
+                        <!-- jQery -->
+                        <script src="js/jquery-3.4.1.min.js"></script>
+                        <!-- popper js -->
+                        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+                        </script>
+                        <!-- bootstrap js -->
+                        <script src="js/bootstrap.js"></script>
+                        <!-- owl slider -->
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
+                        </script>
+                        <!--  OwlCarousel 2 - Filter -->
+                        <script src="https://huynhhuynh.github.io/owlcarousel2-filter/dist/owlcarousel2-filter.min.js"></script>
+                        <!-- custom js -->
+                        <script src="js/custom.js"></script>
+                        <!-- Google Map -->
+                        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
+                        </script>
+                        <!-- End Google Map -->
+                        <script th:inline="javascript">
+
+                            var quadimages = document.querySelectorAll("#quad figure");
+                            for (i = 0; i < quadimages.length; i++) {
+                                quadimages[i].addEventListener('click', function () {
+                                    this.classList.toggle("expanded");
+                                    quad.classList.toggle("full")
+                                });
+                            }
+                            $('#imageModal').on('show.bs.modal', function (event) {
+                                var button = $(event.relatedTarget);
+                                var imgSrc = button.data('img');
+                                var modalImage = $('#modalImage');
+                                modalImage.attr('src', imgSrc);
+                            });
+
+                            $('#imageModal').on('hidden.bs.modal', function () {
+                                var modalImage = $('#modalImage');
+                                modalImage.attr('src', '');
+                            });
+                            function showSection(sectionId) {
+                                // Hide all sections
+                                const sections = document.querySelectorAll('.section');
+                                sections.forEach(section => {
+                                    section.classList.remove('active');
+                                });
+
+                                // Show the selected section
+                                const sectionToShow = document.getElementById(sectionId);
+                                sectionToShow.classList.add('active');
+
+                                // Remove 'active' class from all nav items
+                                const navItems = document.querySelectorAll('.nav-item');
+                                navItems.forEach(navItem => {
+                                    navItem.classList.remove('active');
+                                });
+
+                                // Add 'active' class to the selected nav item
+                                const selectedNavItem = document.getElementById('nav-' + sectionId);
+                                if (selectedNavItem) {
+                                    selectedNavItem.classList.add('active');
+                                }
+                            }
+
+                            function paginateGallery(sectionId, imagesPerPage) {
+                                const gallery = document.getElementById(`${sectionId}-gallery`);
+                                const images = gallery.getElementsByClassName('img-box');
+                                const totalPages = Math.ceil(images.length / imagesPerPage);
+
+                                const pagination = document.getElementById(`${sectionId}-pagination`);
+                                pagination.innerHTML = '';
+
+                                for (let i = 1; i <= totalPages; i++) {
+                                    const button = document.createElement('button');
+                                    button.innerText = i;
+                                    button.onclick = () => showPage(sectionId, i, imagesPerPage);
+                                    pagination.appendChild(button);
+                                }
+
+                                showPage(sectionId, 1, imagesPerPage);
+                            }
+
+                            function showPage(sectionId, page, imagesPerPage) {
+                                const gallery = document.getElementById(`${sectionId}-gallery`);
+                                const images = gallery.getElementsByClassName('img-box');
+                                const start = (page - 1) * imagesPerPage;
+                                const end = start + imagesPerPage;
+
+                                for (let i = 0; i < images.length; i++) {
+                                    images[i].style.display = 'none';
+                                    if (i >= start && i < end) {
+                                        images[i].style.display = 'inline-block';
+                                    }
+                                }
+
+                                const pagination = document.getElementById(`${sectionId}-pagination`);
+                                const buttons = pagination.getElementsByTagName('button');
+                                for (let i = 0; i < buttons.length; i++) {
+                                    buttons[i].classList.remove('active');
+                                }
+                                buttons[page - 1].classList.add('active');
+                            }
+
+// Initialize pagination for each section
+                            window.onload = () => {
+                                paginateGallery('quartz', 12);
+                                paginateGallery('marble', 12);
+                                paginateGallery('granite', 12);
+                                paginateGallery('soapstone', 12);
+                            };
+
+                        </script>
+                        <style>
+                            .gallery-image {
+                                padding: 20px;
+                                display: flex;
+                                flex-wrap: wrap;
+                                justify-content: center;
+                            }
+
+                            .gallery-image img {
+                                height: 250px;
+                                width: 350px;
+                                transform: scale(1.0);
+                                transition: transform 0.4s ease;
+                            }
+
+                            .img-box {
+                                box-sizing: content-box;
+                                margin: 10px;
+                                height: 250px;
+                                width: 350px;
+                                overflow: hidden;
+                                display: inline-block;
+                                color: white;
+                                position: relative;
+                                background-color: white;
+                            }
+
+                            .caption {
+                                position: absolute;
+                                bottom: 5px;
+                                left: 20px;
+                                opacity: 0.0;
+                                transition: transform 0.3s ease, opacity 0.3s ease;
+                            }
+
+                            .transparent-box {
+                                height: 250px;
+                                width: 350px;
+                                background-color:rgba(0, 0, 0, 0);
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                transition: background-color 0.3s ease;
+                            }
+
+                            .img-box:hover img {
+                                transform: scale(1.1);
+                            }
+
+                            .img-box:hover .transparent-box {
+                                background-color:rgba(0, 0, 0, 0.5);
+                            }
+
+                            .img-box:hover .caption {
+                                transform: translateY(-20px);
+                                opacity: 1.0;
+                            }
+
+                            .img-box:hover {
+                                cursor: pointer;
+                            }
+
+                            .caption > p:nth-child(2) {
+                                font-size: 0.8em;
+                            }
+
+                            .opacity-low {
+                                opacity: 0.5;
+                            }
+
+                            .section {
+                                display: none;
+                                opacity: 0;
+                                transition: opacity 0.5s ease-in-out;
+                                margin-top: 20px;
+                                padding: 20px;
+                                border: 1px solid #ccc;
+                                border-radius: 8px;
+                            }
+
+                            .section.active {
+                                display: block;
+                                opacity: 1;
+                            }
+
+                            .img-box {
+                                display: inline-block;
+                                margin: 5px;
+                            }
+
+                            .pagination {
+                                text-align: center;
+                                margin-top: 20px;
+                            }
+
+                            .pagination button {
+                                border: none;
+                                background-color: #ccc;
+                                padding: 5px 10px;
+                                margin: 0 5px;
+                                cursor: pointer;
+                            }
+
+                            .pagination button.active {
+                                background-color: #888;
+                                color: white;
+                            }
+
+
+                            .modal-content {
+                                background: transparent;
+                                border: none;
+                            }
+                            .modal-body img {
+                                border-radius: 15px;
+                            }
+                            ul {
+                                list-style-type: none;
+                            }
+                            * {
+                                margin: 0;
+                                padding: 0;
+                            }
+
+                            /* Navbar styles */
+                            .navbar-brand .logo {
+                                width: auto;
+                                height: 50px; /* Adjust height as needed */
+                            }
+
+                            /* About Section */
+                            .about_section .detail-box {
+                                width: 100%;
+                            }
+
+                            /* Why Us Section */
+                            .why_us_section .detail-box {
+                                width: 100%;
+                            }
+
+                            .carousel {
+                                margin: 25px 0 50px;
+                                background: #fff;
+                                position: relative;
+                                padding: 8px;
+                                box-shadow: 0 0 1px rgba(0,0,0,0.3);
+                            }
+                            .carousel:before, .carousel:after {
+                                z-index: -1;
+                                position: absolute;
+                                content: "";
+                                bottom: 15px;
+                                left: 10px;
+                                width: 50%;
+                                top: 80%;
+                                max-width: 400px;
+                                background: rgba(0, 0, 0, 0.7);
+                                box-shadow: 0 15px 10px rgba(0, 0, 0, 0.7);
+                                transform: rotate(-3deg);
+                            }
+                            .carousel:after {
+                                transform: rotate(3deg);
+                                right: 10px;
+                                left: auto;
+                            }
+                            .carousel .carousel-item {
+                                text-align: center;
+                                min-height: 200px;
+                            }
+                            .carousel .carousel-item img {
+                                max-width: 100%;
+                                margin: 0 auto; /* Align slide image horizontally center in Bootstrap v3 */
+                            }
+                            .carousel-control-prev, .carousel-control-next {
+                                width: 27px;
+                                height: 54px;
+                                overflow: hidden;
+                                opacity: 1;
+                                margin: auto 0;
+                                background: none;
+                                text-shadow: none;
+                            }
+                            .carousel-control-prev span, .carousel-control-next span {
+                                width: 54px;
+                                height: 54px;
+                                display: inline-block;
+                                background: #4a4a4a;
+                                border-radius: 50%;
+                                box-shadow: 0 0 1px rgba(0,0,0,0.3);
+                            }
+                            .carousel-control-prev span {
+                                margin-right: -27px;
+                            }
+                            .carousel-control-next span {
+                                margin-left: -27px;
+                            }
+                            .carousel-control-prev:hover span, .carousel-control-next:hover span {
+                                background: #3b3b3b;
+                            }
+                            .carousel-control-prev i, .carousel-control-next i {
+                                font-size: 24px;
+                                margin-top: 13px;
+                            }
+                            .carousel-control-prev {
+                                margin-left: -28px;
+                            }
+                            .carousel-control-next {
+                                margin-right: -28px;
+                            }
+                            .carousel-control-prev i {
+                                margin-left: -24px;
+                            }
+                            .carousel-control-next i {
+                                margin-right: -24px;
+                            }
+                            .carousel-indicators {
+                                bottom: -42px;
+                            }
+                            .carousel-indicators li, .carousel-indicators li.active {
+                                width: 11px;
+                                height: 11px;
+                                border-radius: 50%;
+                                margin: 1px 4px;
+                            }
+                            .carousel-indicators li {
+                                border: 1px solid #475c6f;
+                            }
+                            .carousel-indicators li.active {
+                                background: #20b0b9;
+                                border-color: #20b0b9;
+                            }
+                            .about_section .detail-box,
+                            .why_us_section .detail-box {
+                                width: 100%;
+                            }
+
+                            .about_section .detail-box p,
+                            .why_us_section .detail-box p {
+                                width: 100%;
+                                margin: 0 auto; /* Esto centra el texto si el contenedor tiene un ancho fijo */
+                                text-align: justify; /* Opcional: justifica el texto para un mejor aspecto */
+                            }
+                            div#quad {
+                                background-color: #fff; /* Set background color to white */
+                                font-size: 0;
+                                width: 80%; /* Adjust width to make it more responsive */
+                                margin: 0 auto;
+                                box-shadow: 0 0 12px rgba(0,0,0,0.8);
+                                display: flex;
+                                flex-wrap: wrap;
+                                justify-content: space-between;
+                            }
+
+                            div#quad figure {
+                                margin: 10px; /* Add margin to create space between figures */
+                                width: calc(25% - 20px); /* 25% width minus total horizontal margin */
+                                aspect-ratio: 1; /* Maintain aspect ratio to ensure images are the same size */
+                                position: relative;
+                                overflow: hidden;
+                                display: inline-block;
+                                transition: 1s;
+                                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow to each figure */
+                            }
+
+                            div#quad figure:hover {
+                                cursor: pointer;
+                                z-index: 4;
+                            }
+
+                            div#quad figure img {
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover; /* Ensure images cover the entire figure */
+                                border-radius: 10px; /* Add border radius to images */
+                            }
+
+                            div#quad figure span {
+                                display: block;
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                width: 110%; /* Make the span wider */
+                                height: 100%;
+                                background: rgba(0, 0, 0, 0.3);
+                                opacity: 0;
+                                transition: opacity 1s;
+                            }
+
+                            div#quad figure:hover span {
+                                opacity: 1;
+                            }
+
+                            div#quad figure:nth-child(1) {
+                                transform-origin: top left;
+                            }
+
+                            div#quad figure:nth-child(2) {
+                                transform-origin: top right;
+                            }
+
+                            div#quad figure:nth-child(3) {
+                                transform-origin: bottom left;
+                            }
+
+                            div#quad figure:nth-child(4) {
+                                transform-origin: bottom right;
+                            }
+
+                            div#quad figure figcaption {
+                                margin: 0;
+                                opacity: 0;
+                                background: rgba(0, 0, 0, 0.3);
+                                color: #fff;
+                                padding: .3rem;
+                                font-size: 1.2rem;
+                                position: absolute;
+                                bottom: 0;
+                                width: 100%;
+                                transition: 1s opacity;
+                            }
+
+                            .expanded {
+                                transform: scale(2);
+                                z-index: 5;
+                            }
+
+                            div#quad figure.expanded figcaption {
+                                opacity: 1;
+                            }
+
+                            div.full figure:not(.expanded) {
+                                pointer-events: none;
+                            }
+
+                            /* Media queries for responsiveness */
+                            @media (max-width: 1200px) {
+                                div#quad {
+                                    width: 90%; /* Adjust container width for medium screens */
+                                }
+                                div#quad figure {
+                                    width: calc(33.3333% - 20px); /* 3 images per row */
+                                }
+                            }
+
+                            @media (max-width: 768px) {
+                                div#quad {
+                                    width: 100%; /* Adjust container width for small screens */
+                                }
+                                div#quad figure {
+                                    width: calc(50% - 20px); /* 2 images per row */
+                                }
+                            }
+
+                            @media (max-width: 480px) {
+                                div#quad figure {
+                                    width: calc(100% - 20px); /* 1 image per row */
+                                }
+                            }
+
+
+
+
+
+                        </style>
+                </body>
+
+                </html>
